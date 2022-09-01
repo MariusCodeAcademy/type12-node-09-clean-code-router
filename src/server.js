@@ -21,12 +21,16 @@ app.get('/', (req, res) => {
   });
 });
 
+const postColums = 'id, author, body, category, createdAt';
+const tableName = 'posts';
+
 // ROUTES
 // GET /api/articles - grazina visus postus
 app.get('/api/articles', async (req, res) => {
   try {
     const conn = await mysql.createConnection(dbConfig);
-    const sql = 'SELECT * FROM posts WHERE archived = 0';
+    const sql = `SELECT ${postColums} FROM ${tableName} WHERE archived = 0`;
+    console.log('sql ===', sql);
     const [rows] = await conn.query(sql);
     res.status(200).json(rows);
     conn.end();
@@ -45,7 +49,7 @@ app.get('/api/articles/:aId', async (req, res) => {
   const id = req.params.aId;
   try {
     const conn = await mysql.createConnection(dbConfig);
-    const sql = 'SELECT * FROM posts WHERE id = ?';
+    const sql = 'SELECT id, author, body, category, FROM posts WHERE id = ?';
     const [rows] = await conn.execute(sql, [id]);
     res.status(200).json(rows[0]);
     conn.end();
