@@ -6,6 +6,7 @@ const colors = require('colors');
 const morgan = require('morgan');
 const mysql = require('mysql2/promise');
 const dbConfig = require('./config');
+const articlesRouter = require('./routes/articlesRoutes');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -42,8 +43,6 @@ app.get('/api/articles', async (req, res) => {
   }
 });
 
-// GET /api/articles?id=3 - grazina straipsni kurio id lygus 3
-
 // GET /api/articles/2 - grazina straipsni kurio id lygus 2 (dinaminis routes)
 app.get('/api/articles/:aId', async (req, res) => {
   const id = req.params.aId;
@@ -60,6 +59,10 @@ app.get('/api/articles/:aId', async (req, res) => {
     });
   }
 });
+
+// ROUTER FOLDER ROUTES
+app.use('/api/articles', articlesRouter);
+
 // 404 - returns json
 app.use((req, res) => {
   res.status(404).json({
