@@ -5,7 +5,6 @@ const express = require('express');
 const colors = require('colors');
 const morgan = require('morgan');
 const testDbConnection = require('./utils/testDb');
-const articlesRouter = require('./routes/articlesRoutes');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -22,7 +21,11 @@ app.get('/', (req, res) => {
 });
 
 // ROUTER FOLDER ROUTES
+const articlesRouter = require('./routes/articlesRoutes');
+const commentsRouter = require('./routes/commentsRoutes');
+
 app.use('/api/articles', articlesRouter);
+app.use('/api/comments', commentsRouter);
 
 // 404 - returns json
 app.use((req, res) => {
