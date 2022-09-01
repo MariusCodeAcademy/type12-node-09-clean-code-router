@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 app.get('/api/articles', async (req, res) => {
   try {
     const conn = await mysql.createConnection(dbConfig);
-    const sql = 'SELECT * FROM posts';
+    const sql = 'SELECT * FROM posts WHERE archived = 0';
     const [rows] = await conn.query(sql);
     res.status(200).json(rows);
     conn.end();
