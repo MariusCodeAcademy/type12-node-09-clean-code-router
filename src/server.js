@@ -4,8 +4,7 @@ const express = require('express');
 // eslint-disable-next-line no-unused-vars
 const colors = require('colors');
 const morgan = require('morgan');
-const mysql = require('mysql2/promise');
-const dbConfig = require('./config');
+const testDbConnection = require('./utils/testDb');
 const articlesRouter = require('./routes/articlesRoutes');
 
 const app = express();
@@ -31,22 +30,6 @@ app.use((req, res) => {
     msg: 'Page not found',
   });
 });
-
-async function testDbConnection() {
-  try {
-    const conn = await mysql.createConnection(dbConfig);
-    const [rows] = await conn.query('SELECT 1');
-    // console.log('rows ===', rows);
-    console.log('Connected to MYSQL DB '.bgCyan.bold);
-    conn.end();
-  } catch (error) {
-    console.log(`Error connecting to db ${error.message}`.bgRed.bold);
-    // console.log('error ===', error);
-    if (error.code === 'ECONNREFUSED') {
-      console.log('is Xammp running?'.yellow);
-    }
-  }
-}
 
 testDbConnection();
 
